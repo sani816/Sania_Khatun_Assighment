@@ -2,9 +2,19 @@ let members = [];
 let balances = {};
 let expenses = [];
 
+/* ✅ ADD MEMBER */
 function addMember() {
-  let name = document.getElementById("memberName").value;
-  if (!name) return;
+  let name = document.getElementById("memberName").value.trim();
+
+  if (!name) {
+    alert("Enter member name");
+    return;
+  }
+
+  if (members.includes(name)) {
+    alert("Member already exists!");
+    return;
+  }
 
   members.push(name);
   balances[name] = 0;
@@ -13,6 +23,17 @@ function addMember() {
   document.getElementById("memberName").value = "";
 }
 
+/* ✅ DELETE MEMBER */
+function deleteMember(name) {
+  members = members.filter(m => m !== name);
+  delete balances[name];
+
+  updateMembers();
+  updateBalances();
+  calculateSettlement();
+}
+
+/* ✅ UPDATE MEMBERS UI */
 function updateMembers() {
   let list = document.getElementById("membersList");
   let paidBy = document.getElementById("paidBy");
@@ -23,7 +44,13 @@ function updateMembers() {
   customDiv.innerHTML = "";
 
   members.forEach(m => {
-    list.innerHTML += `<li>${m}</li>`;
+    list.innerHTML += `
+      <li>
+        ${m}
+        <button onclick="deleteMember('${m}')">❌</button>
+      </li>
+    `;
+
     paidBy.innerHTML += `<option>${m}</option>`;
 
     customDiv.innerHTML += `
@@ -32,13 +59,22 @@ function updateMembers() {
   });
 }
 
+/* ✅ ADD EXPENSE */
 function addExpense() {
-  let desc = document.getElementById("desc").value;
+  let desc = document.getElementById("desc").value.trim();
   let amount = parseFloat(document.getElementById("amount").value);
   let payer = document.getElementById("paidBy").value;
   let type = document.getElementById("splitType").value;
 
-  if (!amount || members.length === 0) return;
+  if (!desc || !amount || members.length === 0) {
+    alert("Please fill all fields properly!");
+    return;
+  }
+
+  if (!payer) {
+    alert("Select who paid!");
+    return;
+  }
 
   if (type === "equal") {
     let split = amount / members.length;
@@ -49,6 +85,18 @@ function addExpense() {
     });
 
   } else {
+    let totalCustom = 0;
+
+    members.forEach(m => {
+      let val = parseFloat(document.getElementById(`custom-${m}`).value) || 0;
+      totalCustom += val;
+    });
+
+    if (totalCustom !== amount) {
+      alert("Custom split must equal total amount!");
+      return;
+    }
+
     members.forEach(m => {
       let val = parseFloat(document.getElementById(`custom-${m}`).value) || 0;
 
@@ -59,8 +107,21 @@ function addExpense() {
 
   updateBalances();
   calculateSettlement();
+
+  /* 🔄 RESET INPUTS */
+  document.getElementById("desc").value = "";
+  document.getElementById("amount").value = "";
+  document.getElementById("splitType").value = "equal";
+  document.getElementById("customInputs").style.display = "none";
+
+  // clear custom inputs
+  members.forEach(m => {
+    let el = document.getElementById(`custom-${m}`);
+    if (el) el.value = "";
+  });
 }
 
+/* ✅ UPDATE BALANCES */
 function updateBalances() {
   let list = document.getElementById("balances");
   list.innerHTML = "";
@@ -84,16 +145,16 @@ function updateBalances() {
     list.appendChild(li);
   }
 }
+
+/* ✅ TOGGLE CUSTOM INPUT */
 function toggleCustom() {
   let type = document.getElementById("splitType").value;
   let div = document.getElementById("customInputs");
 
-  if (type === "custom") {
-    div.style.display = "block";
-  } else {
-    div.style.display = "none";
-  }
+  div.style.display = type === "custom" ? "block" : "none";
 }
+
+/* ✅ SETTLEMENT CALCULATION */
 function calculateSettlement() {
   let creditors = [];
   let debtors = [];
@@ -109,11 +170,32 @@ function calculateSettlement() {
   creditors.forEach(c => {
     debtors.forEach(d => {
       let min = Math.min(c.amt, d.amt);
+
       if (min > 0) {
-        result.innerHTML += `<li>${d.name} pays ₹${min.toFixed(2)} to ${c.name}</li>`;
+        result.innerHTML += `
+          <li>${d.name} pays ₹${min.toFixed(2)} to ${c.name}</li>
+        `;
         c.amt -= min;
         d.amt -= min;
       }
     });
   });
+}
+
+/* ✅ RESET ALL (OPTIONAL BUTTON) */
+function resetAll() {
+  members = [];
+  balances = {};
+  expenses = [];
+
+  document.getElementById("membersList").innerHTML = "";
+  document.getElementById("balances").innerHTML = "";
+  document.getElementById("settlement").innerHTML = "";
+  document.getElementById("paidBy").innerHTML = "";
+  document.getElementById("customInputs").innerHTML = "";
+
+  document.getElementById("groupName").value = "";
+  document.getElementById("memberName").value = "";
+  document.getElementById("desc").value = "";
+  document.getElementById("amount").value = "";
 }
