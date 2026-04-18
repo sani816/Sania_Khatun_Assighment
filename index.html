@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Expense Splitter</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+<h1>💸 Smart Expense Splitter</h1>
+
+<div class="container">
+
+  <!-- HOW IT WORKS -->
+  <div class="card">
+    <h2>📌 How It Works</h2>
+    <p>
+      1️⃣ Add members to your group <br>
+      2️⃣ Enter expense details <br>
+      3️⃣ Choose equal or custom split <br>
+      4️⃣ View balances instantly
+    </p>
+  </div>
+
+  <!-- CREATE GROUP -->
+  <div class="card">
+    <h2>👥 Create Group</h2>
+    <p>Give your group a name</p>
+    <input id="groupName" placeholder="e.g. Goa Trip">
+  </div>
+
+  <!-- ADD MEMBERS -->
+  <div class="card">
+    <h2>👤 Add Members</h2>
+    <p>Add all participants</p>
+    <input id="memberName" placeholder="e.g. Rahul">
+    <button onclick="addMember()">➕ Add Member</button>
+    <ul id="membersList"></ul>
+  </div>
+
+  <!-- ADD EXPENSE -->
+  <div class="card">
+    <h2>💸 Add Expense</h2>
+    <p>Enter expense details and split</p>
+
+    <input id="desc" placeholder="e.g. Dinner">
+    <input id="amount" type="number" placeholder="Amount (₹)">
+
+    <label>Paid By:</label>
+    <select id="paidBy"></select>
+
+    <label>Split Type:</label>
+    <select id="splitType" onchange="toggleCustom()">
+      <option value="equal">Equal</option>
+      <option value="custom">Custom</option>
+    </select>
+
+    <div id="customInputs"></div>
+
+    <button onclick="addExpense()">💰 Add Expense</button>
+  </div>
+
+  <!-- BALANCES -->
+  <div class="card">
+    <h2>📊 Balances</h2>
+    <p>See who owes and who gets money</p>
+    <ul id="balances"></ul>
+  </div>
+
+  <!-- SETTLEMENT -->
+  <div class="card">
+    <h2>🤝 Settlement</h2>
+    <p>Final payment summary</p>
+    <ul id="settlement"></ul>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

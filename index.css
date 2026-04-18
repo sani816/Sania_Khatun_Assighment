@@ -1,0 +1,100 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  color: white;
+  text-align: center;
+}
+
+/* Title */
+h1 {
+  margin: 20px;
+  font-size: 28px;
+  background: linear-gradient(90deg, #38bdf8, #a78bfa);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Container */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Cards */
+.card {
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.05);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 10px;
+  width: 320px;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+/* Inputs */
+input, select {
+  width: 90%;
+  padding: 10px;
+  margin: 6px;
+  border-radius: 8px;
+  border: none;
+  background:white;
+  color:black;
+}
+
+/* Button */
+button {
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #38bdf8, #a78bfa);
+  color: white;
+  cursor: pointer;
+}
+
+/* Lists */
+li {
+  list-style: none;
+  margin: 6px;
+  padding: 8px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+}
+
+/* Colors */
+li.positive { color: #22c55e; }
+li.negative { color: #ef4444; }
+
+/* 📱 Mobile */
+@media (max-width: 600px) {
+  .card {
+    width: 95%;
+  }
+}
+
+
+#paidBy {
+  height: auto;
+  background-color:white;
+  border-radius:8px;
+  padding: 10px;
+  
+}
+
+#paidBy option {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 6px;
+}
+
+/* Selected highlight */
+#paidBy option:checked {
+  background: linear-gradient(90deg, #38bdf8, #a78bfa);
+}
